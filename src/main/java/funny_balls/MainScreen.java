@@ -10,7 +10,7 @@ public class MainScreen extends JFrame {
     private static final int WINDOW_HEIGHT = 600;
     private static final String TITLE = "Funny balls";
 
-    private final FunnyBall[] balls = new FunnyBall[10];
+    private FunnyBall[] balls = new FunnyBall[10];
 
     public MainScreen() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -43,6 +43,23 @@ public class MainScreen extends JFrame {
     public void onDrawCanvas(BallsCanvas canvas, Graphics graphics, float deltaTime) {
         update(canvas, deltaTime);
         render(canvas, graphics);
+    }
+
+    public void addBall() {
+        FunnyBall[] oldArray = balls;
+        balls = new FunnyBall[oldArray.length + 1];
+        System.arraycopy(oldArray, 0, balls, 0, oldArray.length);
+        balls[balls.length - 1] = new FunnyBall();
+        setTitle(TITLE + " " + balls.length);
+    }
+
+    public void removeBall() {
+        if (balls.length > 0) {
+            FunnyBall[] oldArray = balls;
+            balls = new FunnyBall[oldArray.length - 1];
+            System.arraycopy(oldArray, 0, balls, 0, balls.length);
+            setTitle(TITLE + " " + balls.length);
+        }
     }
 
     public static void main(String[] args) {
