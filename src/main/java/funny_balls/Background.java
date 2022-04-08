@@ -16,35 +16,43 @@ public class Background {
         if (time <= part) {
             //первая часть - красный максимальный, зеленый возрастает, синий минимальный
             red = 255;
-            green = (int) (x * 255 / part); //inc
+            green = incLine(x, 255, part);
             blue = 0;
         } else if (time <= 2 * part) {
             //вторая часть - красный убывает, зеленый максимальный, синий минимальный
-            red = (int) (255 - 255 * x / part); //dec
+            red = decLine(x, 255, part);
             green = 255;
             blue = 0;
         } else if (time <= 3 * part) {
             //третья часть - красный минимальный, зеленый максимальный, синий возрастает
             red = 0;
             green = 255;
-            blue = (int) (255 * x / part); //inc
+            blue = incLine(x, 255, part);
         } else if (time <= 4 * part) {
             //четвертая часть - красный минимальный, зеленый убывает, синий максимальный
             red = 0;
-            green = (int) (255 - 255 * x / part); //dec
+            green = decLine(x, 255, part);
             blue = 255;
         } else if (time <= 5 * part) {
             //пятая часть - красный возрастает, зеленый минимальный, синий максимальный
-            red = (int) (255 * x / part); //inc
+            red = incLine(x, 255, part);
             green = 0;
             blue = 255;
         } else {
             //шестая часть - красный максимальный, зеленый минимальный, синий убывает
             red = 255;
             green = 0;
-            blue = (int) (255 - 255 * x / part); //dec
+            blue = decLine(x, 255, part);
         }
         return new Color(red, green, blue);
+    }
+
+    private static int decLine(float x, float maxY, float maxX) {
+        return (int) (maxY - maxY * x / maxX);
+    }
+
+    private static int incLine(float x, float maxY, float maxX) {
+        return (int) (maxY * x / maxX);
     }
 
     // метод также вычисляет цвета радуги, логика проще, колебание цветов по синусоидам, равномерно смещенных друг относительно друга,
