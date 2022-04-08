@@ -5,10 +5,12 @@ import java.awt.*;
 
 public class BallsCanvas extends JPanel {
 
+    private float totalFrameTime;
     private long lastFrameTime;
     private final MainScreen mainController;
 
     BallsCanvas(MainScreen controller) {
+        this.totalFrameTime = 0;
         this.lastFrameTime = System.nanoTime();
         this.mainController = controller;
     }
@@ -18,8 +20,10 @@ public class BallsCanvas extends JPanel {
         super.paintComponent(g);
         long currentTime = System.nanoTime();
         float deltaTime = (currentTime - lastFrameTime) * 0.000000001f;
+        totalFrameTime += deltaTime;
         lastFrameTime = currentTime;
         mainController.onDrawCanvas(this, g, deltaTime);
+        setBackground(Background.getColorOfRainbowByLineFunction(totalFrameTime, 20));
         try {
             Thread.sleep(17);
         } catch (InterruptedException e) {
