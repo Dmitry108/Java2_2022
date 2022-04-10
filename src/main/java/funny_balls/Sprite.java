@@ -48,11 +48,11 @@ public class Sprite {
         return halfHeight * 2f;
     }
 
-    public void update(BallsCanvas canvas, float deltaTime) {
+    public void update(SpritesCanvas canvas, float deltaTime) {
 
     }
 
-    public void render(BallsCanvas canvas, Graphics graphics) {
+    public void render(SpritesCanvas canvas, Graphics graphics) {
 
     }
 }

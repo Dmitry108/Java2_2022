@@ -2,11 +2,26 @@ package funny_balls;
 
 import java.awt.*;
 
-public class Background {
+public class Background extends Sprite {
+
+    private Color color;
+    private float totalTime;
+    private final float periodTime = 20;
+
+    @Override
+    public void update(SpritesCanvas canvas, float deltaTime) {
+        totalTime += deltaTime;
+        color = getColorOfRainbowByLineFunction();
+    }
+
+    @Override
+    public void render(SpritesCanvas canvas, Graphics graphics) {
+        canvas.setBackground(color);
+    }
     // метод вычисляет значение красного, зеленого и синего цвета радуги в зависимости от заданного в секундах
     // временного периода (аргумент periodTime). Рассчет основан на деление периода на 6 частей, где значение
     // цветов максимально 255, минимально 0, линейно возрастет или линейно убывает.
-    public static Color getColorOfRainbowByLineFunction(float totalTime, float periodTime) {
+    private Color getColorOfRainbowByLineFunction() {
         int red;
         int green;
         int blue;
@@ -57,7 +72,7 @@ public class Background {
 
     // метод также вычисляет цвета радуги, логика проще, колебание цветов по синусоидам, равномерно смещенных друг относительно друга,
     // однако, выглядит менее равномерно, остутствуют полноценные цвета радуги
-    public static Color getColorOfRainbowByCosFunction(float totalTime, float periodTime) {
+    private Color getColorOfRainbowByCosFunction() {
         double radian = (totalTime % periodTime) * 2 * Math.PI / periodTime;
         int red =  (int) (Math.cos(radian) * 255);
         if (red < 0) red = 0;

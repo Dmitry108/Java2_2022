@@ -17,7 +17,7 @@ public class FunnyBall extends Sprite {
     }
 
     @Override
-    public void update(BallsCanvas canvas, float deltaTime) {
+    public void update(SpritesCanvas canvas, float deltaTime) {
         x += vX * deltaTime;
         y += vY * deltaTime;
         if (getLeft() < canvas.getLeft()) {
@@ -39,7 +39,7 @@ public class FunnyBall extends Sprite {
     }
 
     @Override
-    public void render(BallsCanvas canvas, Graphics graphics) {
+    public void render(SpritesCanvas canvas, Graphics graphics) {
         graphics.setColor(color);
         graphics.fillOval((int) getLeft(), (int) getTop(), (int) getWidth(), (int) getHeight());
     }
