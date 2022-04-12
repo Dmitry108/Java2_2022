@@ -1,8 +1,8 @@
-package funny_balls;
+package funny_sprites.funny_common;
 
 import java.awt.*;
 
-public class Sprite {
+public abstract class Sprite implements ITimeChangeable {
     protected float x;
     protected float y;
     protected float halfWidth;
@@ -46,13 +46,5 @@ public class Sprite {
 
     protected float getHeight() {
         return halfHeight * 2f;
-    }
-
-    public void update(SpritesCanvas canvas, float deltaTime) {
-
-    }
-
-    public void render(SpritesCanvas canvas, Graphics graphics) {
-
     }
 }

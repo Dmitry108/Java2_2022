@@ -1,15 +1,18 @@
-package funny_balls;
+package funny_sprites.funny_bricks;
+
+import funny_sprites.funny_common.Sprite;
+import funny_sprites.funny_common.SpritesCanvas;
 
 import java.awt.*;
 import java.security.SecureRandom;
 
-public class FunnyBall extends Sprite {
+public class FunnyBrick extends Sprite {
     private static final SecureRandom random = new SecureRandom();
     private final Color color;
     private float vX;
     private float vY;
 
-    public FunnyBall() {
+    public FunnyBrick() {
         halfWidth = halfHeight = 20 + random.nextFloat(50);
         color = new Color(random.nextInt());
         vX = 100f + random.nextFloat(200f);
@@ -41,6 +44,6 @@ public class FunnyBall extends Sprite {
     @Override
     public void render(SpritesCanvas canvas, Graphics graphics) {
         graphics.setColor(color);
-        graphics.fillOval((int) getLeft(), (int) getTop(), (int) getWidth(), (int) getHeight());
+        graphics.drawRect((int) getLeft(), (int) getTop(), (int) getWidth(), (int) getHeight());
     }
 }

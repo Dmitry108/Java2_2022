@@ -1,4 +1,6 @@
-package funny_balls;
+package funny_sprites.funny_common;
+
+import funny_sprites.funny_balls.MainFunnyBalls;
 
 import javax.swing.JPanel;
 import java.awt.*;
@@ -6,9 +8,9 @@ import java.awt.*;
 public class SpritesCanvas extends JPanel {
 
     private long lastFrameTime;
-    private final MainScreen mainController;
+    private final ISpritesController mainController;
 
-    SpritesCanvas(MainScreen controller) {
+    public SpritesCanvas(ISpritesController controller) {
         this.lastFrameTime = System.nanoTime();
         this.mainController = controller;
     }

@@ -1,21 +1,26 @@
-package funny_balls;
+package funny_sprites.funny_balls;
+
+import funny_sprites.funny_common.ISpritesController;
+import funny_sprites.funny_common.ITimeChangeable;
+import funny_sprites.funny_common.Sprite;
+import funny_sprites.funny_common.SpritesCanvas;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MainScreen extends JFrame {
+public class MainFunnyBalls extends JFrame implements ISpritesController {
     private static final int POS_X = 200;
     private static final int POS_Y = 200;
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 600;
     private static final String TITLE = "Funny balls";
 
-    private Sprite[] sprites = new Sprite[1];
-    private int spritesCount;
+    private ITimeChangeable[] funnyEntities = new ITimeChangeable[1];
+    private int entityCount;
 
-    public MainScreen() {
+    public MainFunnyBalls() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(POS_X, POS_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
         SpritesCanvas canvas = new SpritesCanvas(this);
@@ -24,8 +29,8 @@ public class MainScreen extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 switch (e.getButton()) {
-                    case MouseEvent.BUTTON1 -> addSprite(new FunnyBall());
-                    case MouseEvent.BUTTON3 -> removeSprite();
+                    case MouseEvent.BUTTON1 -> addEntity(new FunnyBall());
+                    case MouseEvent.BUTTON3 -> removeEntity();
                 }
             }
         });
@@ -35,48 +40,49 @@ public class MainScreen extends JFrame {
     }
 
     private void init() {
-        addSprite(new Background());
+        addEntity(new Background());
     }
 
     private void update(SpritesCanvas canvas, float deltaTime) {
-        for (int i = 0; i < spritesCount; i++) {
-            sprites[i].update(canvas, deltaTime);
+        for (int i = 0; i < entityCount; i++) {
+            funnyEntities[i].update(canvas, deltaTime);
         }
     }
 
     private void render(SpritesCanvas canvas, Graphics graphics) {
-        for (int i = 0; i < spritesCount; i++) {
-            sprites[i].render(canvas, graphics);
+        for (int i = 0; i < entityCount; i++) {
+            funnyEntities[i].render(canvas, graphics);
         }
     }
 
+    @Override
     public void onDrawCanvas(SpritesCanvas canvas, Graphics graphics, float deltaTime) {
         update(canvas, deltaTime);
         render(canvas, graphics);
     }
 
-    public void addSprite(Sprite sprite) {
-        if (sprites.length == spritesCount) {
-            Sprite[] oldArray = sprites;
-            sprites = new Sprite[oldArray.length * 2];
-            System.arraycopy(oldArray, 0, sprites, 0, oldArray.length);
+    public void addEntity(ITimeChangeable entity) {
+        if (funnyEntities.length == entityCount) {
+            ITimeChangeable[] oldArray = funnyEntities;
+            funnyEntities = new ITimeChangeable[oldArray.length * 2];
+            System.arraycopy(oldArray, 0, funnyEntities, 0, oldArray.length);
         }
-        sprites[spritesCount++] = sprite;
+        funnyEntities[entityCount++] = entity;
         updateTitle();
     }
 
-    public void removeSprite() {
-        if (spritesCount > 1) {
-            sprites[--spritesCount] = null;
+    public void removeEntity() {
+        if (entityCount > 1) {
+            funnyEntities[--entityCount] = null;
             updateTitle();
         }
     }
 
     private void updateTitle() {
-        setTitle(TITLE + ": " + (spritesCount - 1));
+        setTitle(TITLE + ": " + (entityCount - 1));
     }
 
     public static void main(String[] args) {
-        new MainScreen();
+        new MainFunnyBalls();
     }
 }

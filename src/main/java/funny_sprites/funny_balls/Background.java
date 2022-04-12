@@ -1,8 +1,12 @@
-package funny_balls;
+package funny_sprites.funny_balls;
+
+import funny_sprites.funny_common.ITimeChangeable;
+import funny_sprites.funny_common.Sprite;
+import funny_sprites.funny_common.SpritesCanvas;
 
 import java.awt.*;
 
-public class Background extends Sprite {
+public class Background implements ITimeChangeable {
 
     private Color color;
     private float totalTime;
@@ -18,6 +22,7 @@ public class Background extends Sprite {
     public void render(SpritesCanvas canvas, Graphics graphics) {
         canvas.setBackground(color);
     }
+
     // метод вычисляет значение красного, зеленого и синего цвета радуги в зависимости от заданного в секундах
     // временного периода (аргумент periodTime). Рассчет основан на деление периода на 6 частей, где значение
     // цветов максимально 255, минимально 0, линейно возрастет или линейно убывает.
