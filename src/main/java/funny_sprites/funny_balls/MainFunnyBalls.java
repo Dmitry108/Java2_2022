@@ -9,8 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class MainFunnyBalls extends JFrame implements ISpritesController {
+public class MainFunnyBalls extends JFrame implements ISpritesController, MouseListener {
     private static final int POS_X = 200;
     private static final int POS_Y = 200;
     private static final int WINDOW_WIDTH = 800;
@@ -24,16 +25,7 @@ public class MainFunnyBalls extends JFrame implements ISpritesController {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(POS_X, POS_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
         SpritesCanvas canvas = new SpritesCanvas(this);
-        canvas.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                switch (e.getButton()) {
-                    case MouseEvent.BUTTON1 -> addEntity(new FunnyBall());
-                    case MouseEvent.BUTTON3 -> removeEntity();
-                }
-            }
-        });
+        canvas.addMouseListener(this);
         add(canvas);
         init();
         setVisible(true);
@@ -85,4 +77,24 @@ public class MainFunnyBalls extends JFrame implements ISpritesController {
     public static void main(String[] args) {
         new MainFunnyBalls();
     }
+
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+        switch (mouseEvent.getButton()) {
+            case MouseEvent.BUTTON1 -> addEntity(new FunnyBall());
+            case MouseEvent.BUTTON3 -> removeEntity();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) { }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) { }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) { }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) { }
 }
