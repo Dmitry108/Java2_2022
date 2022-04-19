@@ -2,10 +2,9 @@ package netchat.client;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler {
+public class ClientGUI extends JFrame implements ActionListener, KeyListener, Thread.UncaughtExceptionHandler {
     private final ChatClient client = new ChatClient();
 
     public static final int WIDTH = 400;
@@ -32,7 +31,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         setTitle("Chat");
 
 
-        logTextArea.setEnabled(false);
+        logTextArea.setEditable(false);
         JScrollPane logScrollPane = new JScrollPane(logTextArea);
         usersList.setPreferredSize(new Dimension(100, 0));
         JScrollPane userListScrollPane = new JScrollPane(usersList);
@@ -52,13 +51,15 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         add(userListScrollPane, BorderLayout.EAST);
 
         onTopCheckBox.addActionListener(this);
+        sendButton.addActionListener(this);
+        messageTextField.addKeyListener(this);
 
         setVisible(true);
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ClientGUI());
+        SwingUtilities.invokeLater(ClientGUI::new);
     }
 
     @Override
@@ -66,9 +67,33 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         Object source = actionEvent.getSource();
         if (source.equals(onTopCheckBox)) {
             setAlwaysOnTop(onTopCheckBox.isSelected());
+        } else if (source.equals(sendButton)) {
+            sendMessage();
         } else {
             throw new IllegalStateException("Unexpected event");
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getSource().equals(messageTextField) && e.getKeyCode() == KeyEvent.VK_ENTER) {
+            sendMessage();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
+    private void sendMessage() {
+        String text = messageTextField.getText();
+        messageTextField.setText("");
+        messageTextField.requestFocus();
+        logTextArea.append(text + '\n');
     }
 
     @Override
