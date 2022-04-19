@@ -3,8 +3,9 @@ package netchat.client;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
-public class ClientGUI extends JFrame implements ActionListener, KeyListener, Thread.UncaughtExceptionHandler {
+public class ClientGUI extends JFrame implements ActionListener, KeyListener, WindowListener, Thread.UncaughtExceptionHandler {
     private final ChatClient client = new ChatClient();
 
     public static final int WIDTH = 400;
@@ -23,6 +24,8 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener, Th
     private final JTextField messageTextField = new JTextField();
     private final JButton sendButton = new JButton("Send");
     private final JList<String> usersList = new JList<>();
+
+    private PrintWriter fileOut;
 
     public ClientGUI() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -53,6 +56,9 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener, Th
         onTopCheckBox.addActionListener(this);
         sendButton.addActionListener(this);
         messageTextField.addKeyListener(this);
+        loginButton.addActionListener(this);
+        logoutButton.addActionListener(this);
+        addWindowListener(this);
 
         setVisible(true);
         Thread.setDefaultUncaughtExceptionHandler(this);
@@ -69,6 +75,10 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener, Th
             setAlwaysOnTop(onTopCheckBox.isSelected());
         } else if (source.equals(sendButton)) {
             sendMessage();
+        } else if (source.equals(loginButton)) {
+            connect();
+        } else if (source.equals(logoutButton)) {
+            disconnect();
         } else {
             throw new IllegalStateException("Unexpected event");
         }
@@ -89,11 +99,36 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener, Th
     public void keyReleased(KeyEvent e) {
     }
 
+    private void connect() {
+        //methods of connection...
+        System.out.println("connection");
+        try {
+            File logFile = new File("log_chat.txt");
+            if (!logFile.exists()) {
+                logFile.createNewFile();
+            }
+            fileOut = new PrintWriter(logFile.getAbsoluteFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void sendMessage() {
-        String text = messageTextField.getText();
+        String text = messageTextField.getText() + "\n";
         messageTextField.setText("");
         messageTextField.requestFocus();
-        logTextArea.append(text + '\n');
+        logTextArea.append(text);
+
+        fileOut.append(text);
+    }
+
+    private void disconnect() {
+        //methods of disconnection...
+        System.out.println("disconnection");
+        if (fileOut != null) {
+            fileOut.close();
+        }
     }
 
     @Override
@@ -102,4 +137,27 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener, Th
                 throwable.getClass().getCanonicalName(), throwable.getMessage(), throwable.getStackTrace()[0]);
         JOptionPane.showMessageDialog(null, message, "Exception", JOptionPane.ERROR_MESSAGE);
     }
+
+    @Override
+    public void windowOpened(WindowEvent e) { }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        disconnect();
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) { }
+
+    @Override
+    public void windowIconified(WindowEvent e) { }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) { }
+
+    @Override
+    public void windowActivated(WindowEvent e) { }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) { }
 }
