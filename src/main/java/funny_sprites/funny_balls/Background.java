@@ -15,7 +15,7 @@ public class Background implements ITimeChangeable {
     @Override
     public void update(SpritesCanvas canvas, float deltaTime) {
         totalTime += deltaTime;
-        color = getColorOfRainbowByLineFunction();
+        color = getColorOfRainbowByCosFunction();
     }
 
     @Override

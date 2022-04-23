@@ -1,3 +1,4 @@
 build/*
 target/*
 .idea/*
+log_chat.txt
